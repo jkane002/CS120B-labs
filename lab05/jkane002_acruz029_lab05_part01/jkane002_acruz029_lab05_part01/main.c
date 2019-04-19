@@ -1,5 +1,5 @@
-/*	Partner 1 Name & E-mail: Jonathan Kaneshiro jkane002@ucr.edu
- *	Partner 2 Name & E-mail: Andrew Cruz acruz029@ucr.edu
+/*	Partner 1 Name & E-mail: Andrew Cruz acruz029@ucr.edu
+ *	Partner 2 Name & E-mail: Jonathan Kaneshiro jkane002@ucr.edu
  *	Lab Section: 24
  *	Assignment: Lab #5  Exercise # 1
  *	Exercise Description: [optional - include for your own benefit]
