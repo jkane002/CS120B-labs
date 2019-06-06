@@ -13,7 +13,14 @@ unsigned char testOne = 0x00;
 	
 void Tick() {
 	unsigned char A0 = ~PINA & 0x01;
-	//unsigned char A1 = ~PINA>>1 & 0x01;
+	unsigned char A1 = ~PINA>>1 & 0x01;
+	unsigned char A2 = ~PINA>>2 & 0x01;
+
+	unsigned char A0_pressed = A0 && !A1 && !A2;
+	unsigned char A1_pressed = !A0 && A1 && !A2;
+	unsigned char A2_pressed = !A0 && !A1 && A2;
+	unsigned char nothing_pressed = !A0 && !A1 && !A2;
+
 	
 	switch(state) {
 		case init:
@@ -37,6 +44,8 @@ void Tick() {
 	switch(state) {
 		case init:
 			tempB = 0x00;
+//			LCD_ClearScreen();
+	//		LCD_DisplayString(1, "Press a button");
 			while (!USART_IsSendReady(0));
 			USART_Send(0, 0);
 			break;
@@ -44,9 +53,11 @@ void Tick() {
 			//if(!USART_IsSendReady(0)) {
 			tempB = 0x01;
 			testOne = 0x0001;
+			
 			while (!USART_IsSendReady(0)) {};
 			USART_Send(testOne, 0);
-
+			//LCD_ClearScreen();
+			//LCD_DisplayString(1,"Bubble Sort");
 			//}
 			//sendToArduino = 0x00FF;
 			break;
@@ -61,24 +72,21 @@ int main(void)
 {
 	DDRA = 0x00; PORTA = 0xFF;
 	DDRB = 0xFF; PORTB = 0x00;
-	
 	DDRC = 0xFF; PORTC = 0x00;
 	DDRD = 0xFF; PORTD = 0x00;
 	
 	TimerSet(100);
 	TimerOn();
-	 initUSART(0); // initializes USART0
-	 USART_Flush(0);
+	initUSART(0); // initializes USART0
+	USART_Flush(0);
 	 
+	 LCD_init();
 	 state = init;
-	 
+	 			
 	 while(1){
 		 Tick();
-			//while (!USART_IsSendReady(0));
-			USART_Send(sendToArduino & 0x0F, 0);
-			//while(!USART_HasTransmitted(0));
 			
-			while (!TimerFlag) {} // Wait for timer period
-			TimerFlag = 0; // Lower flag raised by timer
+		while (!TimerFlag) {} // Wait for timer period
+		TimerFlag = 0; // Lower flag raised by timer
 	 }
 }
